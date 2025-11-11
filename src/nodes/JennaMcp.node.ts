@@ -542,12 +542,24 @@ export class JennaMcp implements INodeType {
       },
 
       {
-        displayName: "Body file",
-        name: "body_file",
+        displayName: "Body data",
+        name: "body_data",
         type: "string",
         default: "",
-        placeholder: "file",
-        description: "file",
+        placeholder: "data",
+        description: "data",
+        displayOptions: {
+          show: { operation: ["mcp_postApiPengaduanUpload_base64"] },
+        },
+      },
+
+      {
+        displayName: "Body mimetype",
+        name: "body_mimetype",
+        type: "string",
+        default: "",
+        placeholder: "mimetype",
+        description: "mimetype",
         displayOptions: {
           show: { operation: ["mcp_postApiPengaduanUpload_base64"] },
         },
@@ -1290,8 +1302,13 @@ export class JennaMcp implements INodeType {
         }
 
         case "mcp_postApiPengaduanUpload_base64": {
-          const body_file = this.getNodeParameter("body_file", i, "") as any;
-          const body = { file: body_file };
+          const body_data = this.getNodeParameter("body_data", i, "") as any;
+          const body_mimetype = this.getNodeParameter(
+            "body_mimetype",
+            i,
+            "",
+          ) as any;
+          const body = { data: body_data, mimetype: body_mimetype };
           url = baseUrl + "/api/pengaduan/upload-base64";
           method = "post";
           axiosConfig = {
